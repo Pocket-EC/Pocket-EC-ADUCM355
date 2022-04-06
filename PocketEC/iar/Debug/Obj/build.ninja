@@ -1,0 +1,46 @@
+#Generating source browse information for project PocketEC_ADUCM355
+
+
+#Abbreviations
+cc = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.4\common\bin\SourceIndexer.exe
+ll = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.4\common\bin\PbdLink.exe
+bd = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.4\common\bin\makeBrowseData.exe
+
+
+
+#Rules
+rule index
+  depfile = $out.dep
+  command = $cc -out=$out -f $in
+rule link
+  command = $ll -M $out $in
+rule browsedata
+  command = $bd $in -output  $out
+
+
+
+#Build steps
+build AD5940Main.pbi : index AD5940Main.xcl
+build Amperometric.pbi : index Amperometric.xcl
+build main.pbi : index main.xcl
+build PocketEC.pbi : index PocketEC.xcl
+build UART.pbi : index UART.xcl
+build ad5940.pbi : index ad5940.xcl
+build ADuCM355Port.pbi : index ADuCM355Port.xcl
+build ClkLib.pbi : index ClkLib.xcl
+build DioLib.pbi : index DioLib.xcl
+build IntLib.pbi : index IntLib.xcl
+build PwrLib.pbi : index PwrLib.xcl
+build RstLib.pbi : index RstLib.xcl
+build UrtLib.pbi : index UrtLib.xcl
+build retarget.pbi : index retarget.xcl
+build startup_ADuCM355.pbi : index startup_ADuCM355.xcl
+build system_ADuCM355.pbi : index system_ADuCM355.xcl
+build PocketEC_ADUCM355_part0.pbi : link AD5940Main.pbi Amperometric.pbi main.pbi PocketEC.pbi
+build PocketEC_ADUCM355_part1.pbi : link UART.pbi ad5940.pbi ADuCM355Port.pbi ClkLib.pbi
+build PocketEC_ADUCM355_part2.pbi : link DioLib.pbi IntLib.pbi PwrLib.pbi RstLib.pbi
+build PocketEC_ADUCM355_part3.pbi : link UrtLib.pbi retarget.pbi startup_ADuCM355.pbi system_ADuCM355.pbi
+build PocketEC_ADUCM355.pbd : link PocketEC_ADUCM355_part0.pbi PocketEC_ADUCM355_part1.pbi PocketEC_ADUCM355_part2.pbi PocketEC_ADUCM355_part3.pbi
+build PocketEC_ADUCM355.pbw : browsedata PocketEC_ADUCM355.pbd
+
+
